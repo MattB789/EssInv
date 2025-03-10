@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid rgb(0, 0, 0);
+        }
+
+        button {
+            margin: 10px;
+            padding: 8px 16px;
+            background-color: #ff5050;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff0707;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="myTable">
+        <tr>
+            <th>Food Name</th>
+            <th>Quantity</th>
+            <th>Type</th>
+            <th> Delete? </th>
+
+        </tr>
+    </table>
+
+
+
+    <div id="formContainer">
+        <label for="nameInput">
+            Food:
+        </label>
+        <input type="text" id="nameInput">
+
+        <label for="quantityInput">
+            Quantity:
+        </label>
+        <input type="text" id="quantityInput">
+
+        <label for="typeInput">
+            Type (please use title case):
+        </label>
+        <input type="text" id="typeInput">
+        <button onclick="add()">Add</button>
+
+    </div>
+    <button onclick="refresh()">Refresh</button>
+    <script>
+
+        class Item {
+            constructor(namei, quantityi, typei) {
+                this.name = namei;
+                this.quantity = quantityi;
+                this.type = typei;
+
+            }
+            get name() {
+                return this.name;
+            }
+
+            get pop() {
+                return this.pop;
+            }
+
+            inc() {
+                this.pop++;
+            }
+
+            dec() {
+                this.pop--;
+            }
+
+            get quantity() {
+                return this.quantity;
+            }
+            get type() {
+                return this.type;
+            }
+
+            set name(newname) {
+
+                this._name = newname;
+            }
+
+            set quantity(newq) {
+
+                this._name = newq;
+            }
+
+            set type(newtype) {
+
+                this._name = newtype;
+            }
+        }
+
+        let storage = [];
+        let myTable = document.getElementById("myTable");
+
+        function add() {
+
+            let name = document.getElementById("nameInput").value;
+            let quantity = document.getElementById("quantityInput").value;
+            let type = document.getElementById("typeInput").value;
+
+            let items = new Item(name, quantity, type);
+            storage.push(items);
+
+            let table = document.getElementById("myTable");
+            let newRow = table.insertRow(table.rows.length);
+
+
+            newRow.insertCell(0).innerHTML = name;
+            newRow.insertCell(1).innerHTML = quantity;
+            newRow.insertCell(2).innerHTML = type;
+            newRow.insertCell(3).innerHTML =
+                '<button onclick="deleteData(this)">Delete</button>';
+
+
+            document.getElementById("nameInput").value = "";
+            document.getElementById("quantityInput").value = "";
+            document.getElementById("typeInput").value = "";
+
+
+
+
+        }
+
+        //https://www.geeksforgeeks.org/how-to-add-edit-and-delete-data-in-html-table-using-javascript/
+        function deleteData(button) {
+            // Get the parent row of the clicked button
+            let row = button.parentNode.parentNode;
+            storage.splice(row, 1);
+            // Remove the row from the table
+            row.parentNode.removeChild(row);
+
+        }
+
+        function refresh() {
+            //https://stackoverflow.com/questions/7271490/delete-all-rows-in-an-html-table
+            var tableHeaderRowCount = 1;
+            var table = document.getElementById('myTable');
+            var rowCount = table.rows.length;
+            for (var i = tableHeaderRowCount; i < rowCount; i++) {
+                table.deleteRow(tableHeaderRowCount);
+            }
+
+            for (var i = 0; i < storage.length; i++) {
+
+                // Last i elements are already in place  
+                for (var j = 0; j < (storage.length - i - 1); j++) {
+
+                    // Checking if the item at present iteration 
+                    // is greater than the next iteration
+                    if (storage[j].name > storage[j + 1].name) {
+
+                        // If the condition is true
+                        // then swap them
+                        var temp = storage[j]
+                        storage[j] = storage[j + 1]
+                        storage[j + 1] = temp
+                    }
+
+
+
+                }
+            }
+
+            storage.forEach(Item => {
+                let row = document.createElement("tr");
+                let tname = document.createElement("td");
+                let tqua = document.createElement("td");
+                let ttype = document.createElement("td");
+
+
+                var button = document.createElement("button");
+                button.innerHTML = "Delete";
+                button.classList.add('<button onclick="deleteData(this)">Delete</button>');
+
+                tname.innerHTML = Item.name;
+                tqua.innerHTML = Item.quantity;
+                ttype.innerHTML = Item.type;
+
+
+                row.appendChild(tname);
+                row.appendChild(tqua);
+                row.appendChild(ttype);
+                row.appendChild(button);
+
+                // append the row element 
+                myTable.appendChild(row);
+            });
+        }
+
+
+
+    </script>
+
+</body>
+
+
+
+
+</html>
