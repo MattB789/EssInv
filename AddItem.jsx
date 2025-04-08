@@ -8,23 +8,42 @@ const AddItem = () =>{
         price: '',
         quantity: ''
     });
-
-    const handleChange = (e) =>{
-        setForm({...form, [e.target.name]: e.target.value});
-
+// Handles changes to any of the form fields
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
-
+  
     const handleSubmit = async () => {
-        console.log('Form submitted!', form);
-        //await new Promise
-        alert('Item added!');
+        if(!form.productName || !form.weight || !form.price || !form.quantity){
+            alert('Please complete all fields!');
+            return;
+        }
 
-        setForm({
-            productName: '',
-            weight: '',
-            price: '',
-            quantity: ''
-        });
+        try{
+            const res = await fetch('http://localhost:5000/addInventoryItem',{
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(form)
+            });
+            const data = await res.json();
+
+            if(res.ok){
+                console.log('Form submitted!', form);
+                //await new Promise
+                alert('Item added!');
+
+                setForm({
+                    productName: '',
+                    weight: '',
+                    price: '',
+                    quantity: ''
+                });
+            } else {
+                alert('Error: Failed to add item');
+            }
+        } catch (err) {
+            console.error('Failed to fetch: ', err);
+        }
     };
 
     return(

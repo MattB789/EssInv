@@ -10,10 +10,11 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import Cart from './Cart';
 //npm install @mui/material @emotion/react @emotion/styled @mui/icon-material
 
-const UserAvailableInv = () => {
-  const [items, setItems] = useState([]);
+const UserAvailableInv = ({AddToCart, items, setItems}) => {
+  
 
   useEffect(() => {
     fetch('http://localhost:5000/getInventory')
@@ -26,7 +27,7 @@ const UserAvailableInv = () => {
         setItems(sorted);
       })
       .catch((err) => console.error('Failed to fetch inventory:', err));
-  }, []);
+  }, [setItems]);
 
   return (
     <div>
