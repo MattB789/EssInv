@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, Typography, List, ListItem} from '@mui/material';
+import {Box, Button, Typography, List, ListItem, ListItemText, Divider, Paper, TextField, IconButton, InputAdornment} from '@mui/material';
 
 const Cart = ({cart, setCart, userEmail, setItems}) => {
     const finalizeOrder = async () => {
@@ -40,21 +40,46 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
     };
 
     return(
-        <Box sx={{p:3}}>
-            <Typography variant="h5">Your Cart</Typography>
-            <List>
-                {cart.map(item => (
-                    <ListItem key={item.product_id}>
-                        {item.product_name} - {item.quantity}
-                    </ListItem>
-                ))}
-            </List>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={finalizeOrder}
-                disabled={cart.length === 0}
-            > Place Order </Button>
+        <Box sx={{display: 'flex', justifyContent: 'center', mt: 5, px: 2}}>
+            <Paper elevation={3} sx={{maxWidth: 600, width: '100%', backgroundColor: 'white', padding: 4, borderRadius: 3}}>
+                <Typography variant="h5" fontWeight="bold" mb={2}>Your Cart</Typography>
+                {cart.length === 0 ? (<Typography variant="body1">Your cart is empty.</Typography>):(
+                    <>
+                        <List>
+                            {cart.map((item, index) => 
+                                <React.Fragment key={item.product_id}>
+                                    <ListItem disablePadding sx={{py:2}}>
+                                        <ListItemText primary={item.product_name} sx={{mr:2}}/>
+                                        <TextField
+                                            type="number"
+                                            label="Qty"
+                                            size="small"
+                                            inputProps={{min:1, max: item.quantity}}
+                                            value={item.quantity}
+                                            onChange={(e) => {
+                                                const newQty = parseInt(e.target.value);
+                                                if(newQty >= 1 && newQty <= item.quantity) {
+                                                    setCart(prev => prev.map(p =>
+                                                        p.product_id === item.product_id ? {...p, quantity: newQty} : p
+                                                    ));
+                                                }
+                                            }}
+                                            sx={{width:100}}
+                                            />
+                                    </ListItem>
+                                    {index < cart.length - 1 && <Divider />}
+                                </React.Fragment>
+                            )}
+                        </List>
+
+                        <Box mt={4} textAlign="right">
+                            <Button variant="contained" sx={{backgroundColor: '#ffcc00', color: '#000', fontWeight: 'bold', '&hover': {backgroundColor: '#e6b800'}}} onClick={finalizeOrder}>
+                                Place Order
+                            </Button>
+                        </Box>
+                    </>
+                )}
+            </Paper>
         </Box>
     );
 };

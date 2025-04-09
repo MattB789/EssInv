@@ -48,7 +48,7 @@ const AddItem = () =>{
 
     return(
         <Box sx={{maxWidth: 500, mx: 'auto', mt: 4}}>
-            <Typography variant='h5' gutterBottom>
+            <Typography variant='h5' sx={{fontWeight:'bold'}} gutterBottom>
                 Add New Item to Inventory
             </Typography>
             <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
@@ -80,7 +80,7 @@ const AddItem = () =>{
                     onChange={handleChange}
                 />
 
-                <Button variant='contained' onClick={handleSubmit}>
+                <Button variant='contained' onClick={handleSubmit} sx={{backgroundColor: '#ffcc00', color: '#000', '&:hover':{backgroundColor: '#e6b800'}}}>
                     Submit
                 </Button>
             </Box>
