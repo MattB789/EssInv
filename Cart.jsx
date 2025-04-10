@@ -7,8 +7,8 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
         try {
             const orderDetails = cart.map(item => ({
                 product_name: item.product_name,
-                product_quantity: item.quantity,
-                product_total_weight: item.quantity * item.weight
+                product_quantity: item.cartQuantity,
+                product_total_weight: item.cartQuantity * item.weight
             }));
 
             const res = await fetch('http://localhost:5000/finalizeOrder', {
@@ -55,12 +55,12 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
                                             label="Qty"
                                             size="small"
                                             inputProps={{min:1, max: item.quantity}}
-                                            value={item.quantity}
+                                            value={item.cartQuantity}
                                             onChange={(e) => {
                                                 const newQty = parseInt(e.target.value);
                                                 if(newQty >= 1 && newQty <= item.quantity) {
                                                     setCart(prev => prev.map(p =>
-                                                        p.product_id === item.product_id ? {...p, quantity: newQty} : p
+                                                        p.product_id === item.product_id ? {...p, cartQuantity: newQty} : p
                                                     ));
                                                 }
                                             }}

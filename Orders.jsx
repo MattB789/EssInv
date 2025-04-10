@@ -26,7 +26,7 @@ const Orders = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell> Order ID </TableCell>
-                                <TableCell> User ID </TableCell>
+                                <TableCell> User Email </TableCell>
                                 <TableCell> Total Quantity </TableCell>
                                 <TableCell> Total Weight (g) </TableCell>
                                 <TableCell> Product(s) </TableCell>
@@ -36,7 +36,7 @@ const Orders = () => {
                             {orders.map(order => (
                                <TableRow key={order.order_id}>
                                     <TableCell>{order.order_id}</TableCell>
-                                    <TableCell>{order.user_id}</TableCell>
+                                    <TableCell>student@umbc.edu</TableCell>
                                     <TableCell>{order.total_quantity}</TableCell>
                                     <TableCell>{order.total_weight}</TableCell>
                                     <TableCell>{order.product_names}</TableCell>

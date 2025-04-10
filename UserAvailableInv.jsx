@@ -10,10 +10,9 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import Cart from './Cart';
 //npm install @mui/material @emotion/react @emotion/styled @mui/icon-material
 
-const UserAvailableInv = ({AddToCart, items, setItems}) => {
+const UserAvailableInv = ({AddToCart, items, setItems, cart}) => {
   
 
   useEffect(() => {
@@ -64,7 +63,7 @@ const UserAvailableInv = ({AddToCart, items, setItems}) => {
                 <TableCell align="right">{item.weight} lb(s)</TableCell>
                 <TableCell align="right">{item.total_weight} lb(s)</TableCell>
                 <TableCell align="center">
-                    <IconButton color="primary" onClick={() => AddToCart(item)} title="Add to Cart">
+                    <IconButton color="primary" onClick={() => AddToCart(item)} title="Add to Cart" disabled={item.quantity <= 0 || cart.find(p => p.product_id === item.product_id)?.cartQuantity >= item.quantity}>
                         <AddShoppingCartIcon/>
                     </IconButton>
                 </TableCell>
