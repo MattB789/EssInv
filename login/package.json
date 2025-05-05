@@ -1,0 +1,25 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "firebase": "^11.6.1"
+  },
+  "devDependencies": {
+    "vite": "^6.3.4"
+  },
+
+"scripts": {
+  "dev": "vite"
+}
+
+
+}
