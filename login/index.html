@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <title>Firebase Google Sign-In</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <script src="main.js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,11 +22,10 @@
 </head>
 
 <body>
-    <h2>Firebase Google Sign-In</h2>
-    <button id="loginBtn">Login with Google</button>
-    <div id="username"></div>
+    <h2>Sign-In</h2>
+    <button onclick="loginGoogle()">Login</button>
 
-    <script type="module" src="./main.js"></script>
+
 </body>
 
 </html>
