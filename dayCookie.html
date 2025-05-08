@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie Button Example</title>
+</head>
+
+<body>
+    <button id="myButton">Button</button>
+
+    <script>
+        //set cookie by name, valuem and experiation date
+        function setCookie(name, value, expire) {
+            document.cookie = `${name}=${value}; expire=${expire.toUTCString()}; path=/`;
+        }
+
+        //get the cookie
+        function getCookie(name) {
+            const cookieArr = document.cookie.split("; ");
+            for (let cookie of cookieArr) {
+                let [key, val] = cookie.split("=");
+                if (key === name) return val;
+            }
+            return null;
+        }
+
+        //get the current date
+        function date() {
+            const now = new Date();
+            const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            return end;
+        }
+
+        const button = document.getElementById("myButton");
+
+        // Check if cookie exists and disable button if it does
+        if (getCookie("buttonClicked")) {
+            button.disabled = true;
+            button.innerText = "Already Clicked";
+        }
+
+        //listens to when button is pressed, if cookie is true cannot order again.
+        button.addEventListener("click", () => {
+            const expiry = date();
+            setCookie("buttonClicked", "true", expiry);
+            button.disabled = true;
+            button.innerText = "Cannot Make Changes";
+        });
+    </script>
+</body>
+
+</html>
