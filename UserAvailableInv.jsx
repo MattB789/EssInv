@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 //npm install @mui/material @emotion/react @emotion/styled @mui/icon-material
 
-const UserAvailableInv = ({AddToCart, items, setItems, cart}) => {
+const UserAvailableInv = ({AddToCart, items, setItems, cart, userEmail}) => {
   
 
   useEffect(() => {
@@ -27,6 +27,26 @@ const UserAvailableInv = ({AddToCart, items, setItems, cart}) => {
       })
       .catch((err) => console.error('Failed to fetch inventory:', err));
   }, [setItems]);
+
+  const [visitTracked, setVisitTracked] = useState(false);
+  useEffect(() => {
+    if(userEmail === undefined) return;
+    const emailToSend = userEmail || '';
+    fetch('http://localhost:5000/addVisit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: emailToSend}),
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error('Failed to record visit');
+      return res.json();
+    })
+    .then((data) => {
+      console.log('Visit tracked:', data.message)
+      setVisitTracked(true);
+  })
+    .catch((err) => console.error('Error tracking visit:', err))
+  }, [userEmail, visitTracked]);
 
   return (
     <div>
