@@ -1,5 +1,6 @@
 import React from 'react';
 import {Box, Button, Typography, List, ListItem, ListItemText, Divider, Paper, TextField, IconButton, InputAdornment} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Cart = ({cart, setCart, userEmail, setItems}) => {
     const finalizeOrder = async () => {
@@ -8,7 +9,9 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
             const orderDetails = cart.map(item => ({
                 product_name: item.product_name,
                 product_quantity: item.cartQuantity,
-                product_total_weight: item.cartQuantity * item.weight
+                product_total_weight: item.cartQuantity * item.weight,
+                product_total_price: item.cartQuantity * item.price,
+                product_category: item.category
             }));
 
             const res = await fetch('http://localhost:5000/finalizeOrder', {
@@ -31,12 +34,16 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
                 //clear the cart
                 setCart([]); 
             } else {
-                alert('Error: ' + data.message);
+                alert(data.message || "Failed to place order");
             }
         } catch (err){
             console.error(err);
             alert('Failed to place to order, please try again');
         }
+    };
+
+    const handleRemoveItem = (product_id) => {
+        setCart(prev => prev.filter(item => item.product_id !== product_id));
     };
 
     return(
@@ -66,6 +73,9 @@ const Cart = ({cart, setCart, userEmail, setItems}) => {
                                             }}
                                             sx={{width:100}}
                                             />
+                                            <IconButton edge="end" aria-label="delete" onClick={() => handleRemoveItem(item.product_id)} sx={{ml:2}}>
+                                                <DeleteIcon />
+                                            </IconButton>
                                     </ListItem>
                                     {index < cart.length - 1 && <Divider />}
                                 </React.Fragment>

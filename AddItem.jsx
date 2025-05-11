@@ -6,7 +6,8 @@ const AddItem = () =>{
         productName: '',
         weight: '',
         price: '',
-        quantity: ''
+        quantity: '',
+        category: ''
     });
 // Handles changes to any of the form fields
     const handleChange = (e) => {
@@ -36,7 +37,8 @@ const AddItem = () =>{
                     productName: '',
                     weight: '',
                     price: '',
-                    quantity: ''
+                    quantity: '',
+                    category: ''
                 });
             } else {
                 alert('Error: Failed to add item');
@@ -77,6 +79,12 @@ const AddItem = () =>{
                     name="quantity"
                     type="number"
                     value={form.quantity}
+                    onChange={handleChange}
+                />
+                <TextField
+                    label="Category"
+                    name="category"
+                    value={form.category}
                     onChange={handleChange}
                 />
 

@@ -2,19 +2,33 @@ import {AppBar, Toolbar, Box, Typography, Link as MuiLink} from '@mui/material';
 import Logo from './assets/UMBC-primary-logo-RGB-2K.png';
 import React, {useState} from 'react';
 import './app.css'
-import {Routes, Route, Link, Navigate} from 'react-router-dom';
+import {Routes, Route, Link, Navigate, useNavigate} from 'react-router-dom';
 import AvailableInv from './AvailableInv';
 import UserAvailableInv from './UserAvailableInv';
 import AddItem from './AddItem';
 import Cart from './Cart';
 import Orders from './Orders';
 import Login from './Login';
+import UpdateItem from './UpdateItem';
+import DeleteItem from './DeleteItem';
+import Visits from './Visits';
+import Signup from './Signup';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [items, setItems] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const[isUser, setIsUser] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    setIsUser(false);
+    setUserEmail('');
+    setCart([]);
+    navigate('/login');
+  }
 
   const AddToCart = (item) => {
     setCart((prev) => {
@@ -40,12 +54,29 @@ function App() {
           </Typography>
         </Box>
 
-        <Box display="flex" gap={2} color='black'>
+        <Box 
+        display="flex" 
+        flexWrap="wrap" 
+        justifyContent="center"
+        alignItems="center" 
+        gap={2} 
+        color='black'
+        sx={{ mt: { xs: 1, md: 0 }, px: { xs: 1, md: 0 }, textAlign: 'center' }}
+      >
+
+          {(isAdmin || isUser) && (
+            <MuiLink component="button" onClick={handleLogout} underline="none" sx={{color: '#000', '&hover': {color: '#ffcc00'}}}>
+              Logout
+            </MuiLink>
+          )}
           {isAdmin && (
             <>
             <MuiLink component={Link} to="/admin" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>Admin Inventory</MuiLink>
             <MuiLink component={Link} to="/additem" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>Add Item</MuiLink>
             <MuiLink component={Link} to="/orders" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>Orders</MuiLink>
+            <MuiLink component={Link} to="/updateitem" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>Update Item</MuiLink>
+            <MuiLink component={Link} to="/deleteitem" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>Delete Item</MuiLink>
+            <MuiLink component={Link} to="/visits" underline="none" sx={{ color: '#000', '&:hover': { color: '#ffcc00' } }}>View Visits</MuiLink>
             </>
           )}
           {isUser && (
@@ -62,19 +93,23 @@ function App() {
     <div className="app-container" style={{paddingTop: '1rem'}}>
       <Routes>
         <Route path="/" element={<Navigate to="/login"/>}/>
-        <Route path="/login" element={<Login setIsAdmin={setIsAdmin} setIsUser={setIsUser} />}/>
+        <Route path="/login" element={<Login setIsAdmin={setIsAdmin} setIsUser={setIsUser} setUserEmail={setUserEmail} />}/>
+        <Route path="/signup" element={<Signup />} />
         {isAdmin && (
           <>
             <Route path="/admin" element={<AvailableInv />}/>
             <Route path="/additem" element={<AddItem />}/>
             <Route path="/orders" element={<Orders />} />
+            <Route path="/updateitem" element={<UpdateItem />} />
+            <Route path="/deleteitem" element={<DeleteItem />} />
+            <Route path="/visits" element={<Visits />} />
           </>
         )}
         
         {isUser && (
           <>
-            <Route path="/userinv" element={<UserAvailableInv AddToCart={AddToCart} items={items} setItems={setItems} cart={cart}/>}/>
-            <Route path="/cart" element={<Cart cart={cart} setCart={setCart} userEmail="student@umbc.edu" setItems={setItems}/>}/>
+            <Route path="/userinv" element={<UserAvailableInv AddToCart={AddToCart} items={items} setItems={setItems} cart={cart} userEmail={userEmail}/>}/>
+            <Route path="/cart" element={<Cart cart={cart} setCart={setCart} userEmail={userEmail} setItems={setItems}/>}/>
           </>
         )}
       </Routes>

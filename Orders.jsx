@@ -36,10 +36,10 @@ const Orders = () => {
                             {orders.map(order => (
                                <TableRow key={order.order_id}>
                                     <TableCell>{order.order_id}</TableCell>
-                                    <TableCell>student@umbc.edu</TableCell>
+                                    <TableCell>{order.user_email}</TableCell>
                                     <TableCell>{order.total_quantity}</TableCell>
                                     <TableCell>{order.total_weight}</TableCell>
-                                    <TableCell>{order.product_names}</TableCell>
+                                    <TableCell>{order.product_name}</TableCell>
                                </TableRow> 
                             ))}
                         </TableBody>
